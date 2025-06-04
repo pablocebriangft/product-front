@@ -1,0 +1,39 @@
+<h2 class="product-list-title">Product List</h2>
+
+<ng-container *ngIf="products$ | async as resolvedProducts">
+  <p *ngIf="resolvedProducts.length === 0" class="no-products-msg">No hay productos disponibles.</p>
+  <table *ngIf="resolvedProducts.length > 0" class="product-table">
+    <thead>
+      <tr>
+        <th class="product-table-header">ID</th>
+        <th class="product-table-header">Name</th>
+        <th class="product-table-header">Description</th>
+        <th class="product-table-header">Price</th>
+        <th class="product-table-header">Weight</th>
+        <th class="product-table-header">Category</th>
+        <th class="product-table-header">In Catalog</th>
+        <th class="product-table-header">Stock</th>
+        <th class="product-table-header">Threshold</th>
+        <th class="product-table-header">Total Sales</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of resolvedProducts" class="product-table-row">
+        <td class="product-table-cell">{{ product.id }}</td>
+        <td class="product-table-cell">{{ product.name }}</td>
+        <td class="product-table-cell">{{ product.description }}</td>
+        <td class="product-table-cell">{{ product.price | currency:'EUR' }}</td>
+        <td class="product-table-cell">{{ product.weight }}</td>
+        <td class="product-table-cell">{{ product.category }}</td>
+        <td class="product-table-cell">{{ product.inCatalog ? 'Yes' : 'No' }}</td>
+        <td class="product-table-cell">{{ product.inventoryData?.stock }}</td>
+        <td class="product-table-cell">{{ product.inventoryData?.threshold}}</td>
+        <td class="product-table-cell">{{ product.inventoryData?.totalSales }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<a [routerLink]="['/products/new']">
+  <button class="add-product-btn">Add New Product</button>
+</a>
