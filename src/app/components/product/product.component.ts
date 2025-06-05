@@ -8,11 +8,12 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import { map } from 'rxjs/operators';
+import { FakeAdComponent } from '../fake-ad/fake-ad.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, FakeAdComponent],
   styleUrls: ['./product.component.scss'],
   templateUrl: './product.component.html',
   animations: [
