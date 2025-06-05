@@ -82,7 +82,7 @@
                 "input": "public"
               },
               "_redirects"
-            ],
+            ]
             "styles": [
               "src/styles.scss"
             ]
