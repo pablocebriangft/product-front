@@ -12,55 +12,51 @@ import { trigger, transition, style, animate } from '@angular/animations';
         <button class="close-btn" (click)="closeAd()">×</button>
         <div class="ad-body">
           <div class="ad-header">
-            <span class="pulse">💥 CAOS TOTAL Y GRATIS 💥</span>
-            <h2>¡DESCUENTO DEL 999% EN CÓDIGO CAÓTICO! 🚨</h2>
-            <div class="timer">¡OFERTA EXPIRA EN: {{countdown}} SEGUNDOS! (O CUANDO NOS DÉ LA GANA O CUANDO SE ACABE EL CAFÉ O CUANDO EXPLOTE ALGO)</div>
+            <span class="pulse">🔥 HOT DEAL 🔥</span>
+            <h2>¡DESCUENTO DEL 100% EN CLEAN CODE! 🚨</h2>
+            <div class="timer">¡OFERTA EXPIRA EN: {{countdown}} SEGUNDOS!</div>
           </div>
           <div class="ad-image">
             <img src="https://m.media-amazon.com/images/I/41xShlnTZTL._SX376_BO1,204,203,200_.jpg" alt="Clean Code Book">
-            <div class="stamp">¡GRATIS TOTAL! 💥</div>
-            <div class="chaos-warning">⚠️ ¡CÓDIGO EXTREMADAMENTE CAÓTICO! PUEDE CAUSAR EXPLOSIONES! ⚠️</div>
+            <div class="stamp">¡LO MÁS VENDIDO! 📚</div>
           </div>
           <div class="ad-text">
-            <h3>¡TU CÓDIGO ES DEMASIADO ABURRIDO Y CARO! 🥱</h3>
-            <p>¿Tu código es legible? ¿Tiene sentido? ¿Es mantenible? ¿Pagaste por él? 🤮</p>
-            <p>¡Es hora de hacerlo CAÓTICO Y GRATIS! 🌪️✨</p>
+            <h3>¡DEJA DE ESCRIBIR CÓDIGO COMO UN MONO! 🐒</h3>
+            <p>¿Tu código parece una jungla? 🌴 ¿Tus variables se llaman 'a', 'b', 'c'? 🤦‍♂️</p>
+            <p>¡Clean Code es la solución! 🧹✨</p>
             <div class="benefits">
               <div class="benefit-item">
-                <span class="emoji">💥</span>
-                <span>Variables que explotan en tiempo de ejecución (literalmente)</span>
+                <span class="emoji">✅</span>
+                <span>Nombres de variables que tu abuela entendería</span>
               </div>
               <div class="benefit-item">
-                <span class="emoji">💥</span>
-                <span>Funciones que hacen TODO (y cosas que ni sabías que existían)</span>
+                <span class="emoji">✅</span>
+                <span>Funciones que hacen UNA cosa (no 50)</span>
               </div>
               <div class="benefit-item">
-                <span class="emoji">💥</span>
-                <span>200% de código comentado (porque ni el comentario se entiende)</span>
+                <span class="emoji">✅</span>
+                <span>0% de código comentado (porque se entiende solo)</span>
               </div>
               <div class="benefit-item">
-                <span class="emoji">💥</span>
-                <span>Tus compañeros te odiarán (y te enviarán memes de odio)</span>
+                <span class="emoji">✅</span>
+                <span>Tus compañeros ya no te odiarán</span>
               </div>
             </div>
             <div class="price-tag">
-              <span class="original-price">999.999,99€</span>
-              <span class="discount-price">0,00€</span>
-              <span class="savings">¡AHORRA TODO! (Y TU SANIDAD MENTAL) 💸</span>
+              <span class="original-price">$99.99</span>
+              <span class="discount-price">$0.00</span>
+              <span class="savings">¡AHORRA $99.99! 💰</span>
             </div>
             <div class="social-proof">
-              <p>👨‍💻 "Mi código es tan caótico que Stack Overflow se rindió" - Juan, 27</p>
-              <p>👩‍💻 "Por fin puedo justificar mi código con 'es arte abstracto'" - María, 31</p>
-              <p>🤖 "Hasta los robots tienen pesadillas con mi código" - ChatGPT, 2024</p>
-              <p>💥 "Mi código hizo que el servidor explotara (literalmente)" - DevOps, 2024</p>
+              <p>👨‍💻 "Antes mi código era un desastre, ahora es una obra de arte" - Juan, 27</p>
+              <p>👩‍💻 "Por fin puedo entender mi propio código" - María, 31</p>
             </div>
-            <p class="disclaimer">* No nos hacemos responsables de la salud mental de tus compañeros, ni de la tuya, ni de la de nadie, ni de los daños materiales</p>
+            <p class="disclaimer">* Solo necesitas leer el libro de Robert C. Martin (y aplicarlo, claro)</p>
             <div class="guarantee">
-              <span>🛡️ GARANTÍA DE -100% DE SATISFACCIÓN O TE DEVOLVEMOS EL CAOS</span>
+              <span>🛡️ GARANTÍA DE 100% DE SATISFACCIÓN O TU DINERO DEVUELTO</span>
             </div>
           </div>
         </div>
-        <div class="bottom-left-chaos">✨ EL CAOS TE ESPERA... ¡O NO! ✨</div>
       </div>
     </div>
   `,
@@ -157,19 +153,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
         position: absolute;
         top: -10px;
         right: -10px;
-        background: #ff6b6b;
-        color: white;
-        padding: 0.5rem;
-        border-radius: 4px;
-        transform: rotate(15deg);
-        font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-
-      .chaos-warning {
-        position: absolute;
-        top: -10px;
-        left: -10px;
         background: #ff6b6b;
         color: white;
         padding: 0.5rem;
@@ -283,17 +266,6 @@ import { trigger, transition, style, animate } from '@angular/animations';
       0% { opacity: 1; }
       50% { opacity: 0.5; }
       100% { opacity: 1; }
-    }
-
-    .bottom-left-chaos {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      color: #ff00ff; /* A chaotic color */
-      font-size: 1rem;
-      font-weight: bold;
-      animation: blink 1s infinite;
-      z-index: 10000;
     }
   `],
   animations: [
