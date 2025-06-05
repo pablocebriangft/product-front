@@ -1,39 +1,229 @@
 <h2 class="product-list-title">Product List</h2>
 
+<div class="controls-section">
+  <div class="search-container">
+    <input 
+      type="number" 
+      [(ngModel)]="searchId" 
+      placeholder="Enter product ID"
+      (keyup.enter)="searchProduct()"
+      class="search-input"
+    />
+    <input 
+      type="text" 
+      [(ngModel)]="searchText" 
+      placeholder="Search by name or description"
+      (keyup)="filterProducts()"
+      class="search-input"
+    />
+    <button (click)="searchProduct()" class="search-btn">Search</button>
+  </div>
+
+  <div class="filter-controls">
+    <select [(ngModel)]="selectedCategory" (change)="filterByCategory()" class="filter-select">
+      <option value="">All Categories</option>
+      <option value="BOOKS">Books</option>
+      <option value="TOYS">Toys</option>
+      <option value="SPORTS">Sports</option>
+      <option value="MEAL">Meal</option>
+      <option value="CLOTHES">Clothes</option>
+    </select>
+  </div>
+
+  <div class="view-controls">
+    <button 
+      [class.active]="viewMode === 'table'" 
+      (click)="setViewMode('table')" 
+      class="view-btn"
+    >
+      <i class="fas fa-table"></i> Table
+    </button>
+    <button 
+      [class.active]="viewMode === 'cards'" 
+      (click)="setViewMode('cards')" 
+      class="view-btn"
+    >
+      <i class="fas fa-th-large"></i> Cards
+    </button>
+  </div>
+
+  <div class="sort-controls">
+    <label for="sort-by">Sort By:</label>
+    <select id="sort-by" [(ngModel)]="sortCriteria" (change)="applySorting()">
+      <option value="id">ID</option>
+      <option value="name">Name</option>
+      <option value="price">Price</option>
+      <option value="stock">Stock</option>
+    </select>
+    <button (click)="toggleSortDirection()">
+      <i class="fas" [ngClass]="{'fa-sort-alpha-down': sortDirection === 'asc' && sortCriteria === 'name', 'fa-sort-alpha-up': sortDirection === 'desc' && sortCriteria === 'name', 'fa-sort-numeric-down': sortDirection === 'asc' && (sortCriteria === 'id' || sortCriteria === 'price' || sortCriteria === 'stock'), 'fa-sort-numeric-up': sortDirection === 'desc' && (sortCriteria === 'id' || sortCriteria === 'price' || sortCriteria === 'stock')}"></i>
+    </button>
+  </div>
+</div>
+
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="loading" class="loading-indicator">
+  Cargando productos...
+</div>
+
 <ng-container *ngIf="products$ | async as resolvedProducts">
-  <p *ngIf="resolvedProducts.length === 0" class="no-products-msg">No hay productos disponibles.</p>
-  <table *ngIf="resolvedProducts.length > 0" class="product-table">
-    <thead>
-      <tr>
-        <th class="product-table-header">ID</th>
-        <th class="product-table-header">Name</th>
-        <th class="product-table-header">Description</th>
-        <th class="product-table-header">Price</th>
-        <th class="product-table-header">Weight</th>
-        <th class="product-table-header">Category</th>
-        <th class="product-table-header">In Catalog</th>
-        <th class="product-table-header">Stock</th>
-        <th class="product-table-header">Threshold</th>
-        <th class="product-table-header">Total Sales</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of resolvedProducts" class="product-table-row">
-        <td class="product-table-cell">{{ product.id }}</td>
-        <td class="product-table-cell">{{ product.name }}</td>
-        <td class="product-table-cell">{{ product.description }}</td>
-        <td class="product-table-cell">{{ product.price | currency:'EUR' }}</td>
-        <td class="product-table-cell">{{ product.weight }}</td>
-        <td class="product-table-cell">{{ product.category }}</td>
-        <td class="product-table-cell">{{ product.inCatalog ? 'Yes' : 'No' }}</td>
-        <td class="product-table-cell">{{ product.inventoryData?.stock }}</td>
-        <td class="product-table-cell">{{ product.inventoryData?.threshold}}</td>
-        <td class="product-table-cell">{{ product.inventoryData?.totalSales }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <p *ngIf="resolvedProducts.length === 0 && !loading" class="no-products-msg">There are no available products.</p>
+
+  <div *ngIf="viewMode === 'table' && !loading" class="table-container" [@fadeInOut]>
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th class="product-table-header">ID</th>
+          <th class="product-table-header">Name</th>
+          <th class="product-table-header">Description</th>
+          <th class="product-table-header">Price</th>
+          <th class="product-table-header">Weight</th>
+          <th class="product-table-header">Category</th>
+          <th class="product-table-header">In Catalog</th>
+          <th class="product-table-header">Stock</th>
+          <th class="product-table-header">Threshold</th>
+          <th class="product-table-header">Total Sales</th>
+          <th class="product-table-header">Promotion</th>
+          <th class="product-table-header">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of paginatedProducts" class="product-table-row" [@fadeInOut]>
+          <td class="product-table-cell">{{ product.id }}</td>
+          <td class="product-table-cell">{{ product.name }}</td>
+          <td class="product-table-cell">{{ product.description }}</td>
+          <td class="product-table-cell">
+            <ng-container *ngIf="findApplicablePromotion(product) as promotion; else noPromotionPrice">
+              <span class="price has-promotion">{{ product.price | currency:'EUR' }}</span>
+              <span class="discounted-price">{{ (product.price * (1 - promotion.discount)) | currency:'EUR' }}</span>
+            </ng-container>
+            <ng-template #noPromotionPrice>
+              <span class="price">{{ product.price | currency:'EUR' }}</span>
+            </ng-template>
+          </td>
+          <td class="product-table-cell">{{ product.weight }}</td>
+          <td class="product-table-cell">{{ product.category }}</td>
+          <td class="product-table-cell">{{ product.inCatalog ? 'Yes' : 'No' }}</td>
+          <td class="product-table-cell">{{ product.inventoryData?.stock }}</td>
+          <td class="product-table-cell">{{ product.inventoryData?.threshold}}</td>
+          <td class="product-table-cell">{{ product.inventoryData?.totalSales }}</td>
+          <td class="product-table-cell">
+            <ng-container *ngIf="findApplicablePromotion(product) as promotion">
+              <span class="promotion-badge">-{{ promotion.discount * 100 }}%</span>
+            </ng-container>
+          </td>
+          <td class="product-table-cell">
+            <button class="edit-btn" [routerLink]="['/products/edit', product.id]">
+              <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="delete-btn" (click)="deleteProduct(product.id)">
+              <i class="fas fa-trash-alt"></i> Delete
+            </button>
+            <button class="stock-btn" (click)="openStockModal(product)">
+              <i class="fas fa-warehouse"></i> Update Stock
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="viewMode === 'cards'" class="cards-container" [@fadeInOut]>
+    <div *ngFor="let product of paginatedProducts" class="product-card" [@fadeInOut]>
+      <div class="card-header">
+        <h3>{{ product.name }}</h3>
+        <span class="category-badge">{{ product.category }}</span>
+      </div>
+      <div class="card-body">
+        <p class="description">{{ product.description }}</p>
+        <div class="price-weight">
+          <ng-container *ngIf="findApplicablePromotion(product) as promotion; else noPromotionPriceCard">
+            <span class="price has-promotion">{{ product.price | currency:'EUR' }}</span>
+            <span class="discounted-price">{{ (product.price * (1 - promotion.discount)) | currency:'EUR' }}</span>
+          </ng-container>
+          <ng-template #noPromotionPriceCard>
+            <span class="price">{{ product.price | currency:'EUR' }}</span>
+          </ng-template>
+          <span class="weight">{{ product.weight }} kg</span>
+        </div>
+        <div class="inventory-info">
+          <div class="info-item">
+            <span class="label">Stock:</span>
+            <span class="value">{{ product.inventoryData?.stock }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Threshold:</span>
+            <span class="value">{{ product.inventoryData?.threshold }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Total Sales:</span>
+            <span class="value">{{ product.inventoryData?.totalSales }}</span>
+          </div>
+        </div>
+        <div class="catalog-status" [class.in-catalog]="product.inCatalog">
+          {{ product.inCatalog ? 'In Catalog' : 'Not in Catalog' }}
+        </div>
+        <div *ngIf="findApplicablePromotion(product) as promotion" class="promotion-info">
+          Promotion: <span class="promotion-badge">-{{ promotion.discount * 100 }}%</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" [routerLink]="['/products/edit', product.id]">
+          <i class="fas fa-edit"></i> Edit
+        </button>
+        <button class="delete-btn" (click)="deleteProduct(product.id)">
+          <i class="fas fa-trash-alt"></i> Delete
+        </button>
+        <button class="stock-btn" (click)="openStockModal(product)">
+          <i class="fas fa-warehouse"></i> Update Stock
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="resolvedProducts.length > 0" class="pagination" [@fadeInOut]>
+    <button 
+      [disabled]="currentPage === 1" 
+      (click)="changePage(currentPage - 1)"
+      class="pagination-btn"
+    >
+      Previous
+    </button>
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+    <button 
+      [disabled]="currentPage === totalPages" 
+      (click)="changePage(currentPage + 1)"
+      class="pagination-btn"
+    >
+      Next
+    </button>
+  </div>
 </ng-container>
 
 <a [routerLink]="['/products/new']">
-  <button class="add-product-btn">Add New Product</button>
+  <button class="add-product-btn"><i class="fas fa-plus-circle"></i> Add New Product</button>
 </a>
+
+<div *ngIf="showStockModal" class="modal-overlay" [@fadeInOut]>
+  <div class="modal-content" [@slideInOut]>
+    <h3>Update Stock</h3>
+    <p>Current stock: {{ selectedProduct?.inventoryData?.stock }}</p>
+    <div class="stock-input">
+      <label>Quantity Change:
+        <input 
+          type="number" 
+          [(ngModel)]="stockChange" 
+          placeholder="Enter quantity change"
+        />
+      </label>
+      <p class="help-text">Enter positive number to add stock, negative to remove</p>
+    </div>
+    <div class="modal-actions">
+      <button class="confirm-btn" (click)="updateStock()"><i class="fas fa-check-circle"></i> Confirm</button>
+      <button class="cancel-btn" (click)="closeStockModal()"><i class="fas fa-times-circle"></i> Cancel</button>
+    </div>
+  </div>
+</div>

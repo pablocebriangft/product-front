@@ -16,8 +16,12 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl);
   }
 
+  getProductsByIds(ids: number[]): Observable<Product[]> {
+    return this.http.post<Product[]>(`${this.apiUrl}/list-by-ids`, ids);
+  }
+
   createProduct(product: Product): Observable<number> {
-  return this.http.post<number>(this.apiUrl, product);
+    return this.http.post<number>(this.apiUrl, product);
   }
 
   getProductById(id: number): Observable<Product> {
@@ -30,6 +34,10 @@ export class ProductService {
 
   deleteProduct(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  updateProductStock(id: number, quantityChange: number): Observable<any> {
+    return this.http.patch(`${this.apiUrl}/${id}`, { quantityChange });
   }
 
 }

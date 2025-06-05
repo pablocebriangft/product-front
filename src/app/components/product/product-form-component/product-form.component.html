@@ -1,5 +1,7 @@
+<h2>{{ isEditMode ? 'Edit Product' : 'Create New Product' }}</h2>
+
 <form [formGroup]="productForm" (ngSubmit)="submit()" style="display: grid; gap: 0.5rem;">
-  <label>Name:: <input type="text" formControlName="name" /></label>
+  <label>Name: <input type="text" formControlName="name" /></label>
   <label>Description: <input type="text" formControlName="description" /></label>
   <label>Price: <input type="number" formControlName="price" /></label>
   <label>Weight: <input type="number" formControlName="weight" /></label>
@@ -20,5 +22,8 @@
     <label>Total Sales: <input type="number" formControlName="totalSales" /></label>
   </div>
 
-  <button type="submit">Create Product</button>
+  <div class="form-actions">
+    <button type="submit" class="submit-btn">{{ isEditMode ? 'Update Product' : 'Create Product' }}</button>
+    <button type="button" class="cancel-btn" (click)="router.navigate(['/products'])">Cancel</button>
+  </div>
 </form>
