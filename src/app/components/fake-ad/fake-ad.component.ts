@@ -12,50 +12,30 @@ import { trigger, transition, style, animate } from '@angular/animations';
         <button class="close-btn" (click)="closeAd()">×</button>
         <div class="ad-body">
           <div class="ad-header">
-            <span class="pulse">🔥 HOT DEAL 🔥</span>
-            <h2>¡DESCUENTO DEL 100% EN CLEAN CODE! 🚨</h2>
-            <div class="timer">¡OFERTA EXPIRA EN: {{countdown}} SEGUNDOS!</div>
+            <span class="pulse">💥 CAOS TOTAL Y GRATIS 💥</span>
+            <h2>¡DESCUENTO DEL 999% EN CÓDIGO CAÓTICO! 🚨</h2>
+            <div class="timer">¡OFERTA EXPIRA EN: {{countdown}} SEGUNDOS! (O CUANDO NOS DÉ LA GANA O CUANDO SE ACABE EL CAFÉ O CUANDO EXPLOTE ALGO)</div>
           </div>
           <div class="ad-image">
             <img src="https://m.media-amazon.com/images/I/41xShlnTZTL._SX376_BO1,204,203,200_.jpg" alt="Clean Code Book">
-            <div class="stamp">¡LO MÁS VENDIDO! 📚</div>
+            <div class="stamp">¡GRATIS TOTAL! 💥</div>
+            <div class="chaos-warning">⚠️ ¡CÓDIGO EXTREMADAMENTE CAÓTICO! PUEDE CAUSAR EXPLOSIONES! ⚠️</div>
           </div>
           <div class="ad-text">
-            <h3>¡DEJA DE ESCRIBIR CÓDIGO COMO UN MONO! 🐒</h3>
-            <p>¿Tu código parece una jungla? 🌴 ¿Tus variables se llaman 'a', 'b', 'c'? 🤦‍♂️</p>
-            <p>¡Clean Code es la solución! 🧹✨</p>
-            <div class="benefits">
-              <div class="benefit-item">
-                <span class="emoji">✅</span>
-                <span>Nombres de variables que tu abuela entendería</span>
-              </div>
-              <div class="benefit-item">
-                <span class="emoji">✅</span>
-                <span>Funciones que hacen UNA cosa (no 50)</span>
-              </div>
-              <div class="benefit-item">
-                <span class="emoji">✅</span>
-                <span>0% de código comentado (porque se entiende solo)</span>
-              </div>
-              <div class="benefit-item">
-                <span class="emoji">✅</span>
-                <span>Tus compañeros ya no te odiarán</span>
-              </div>
-            </div>
+            <h3>¡TU CÓDIGO ES DEMASIADO ABURRIDO Y CARO! 🥱</h3>
+            <p>¿Tu código es legible? ¿Tiene sentido? ¿Es mantenible? ¿Pagaste por él? 🤮</p>
             <div class="price-tag">
-              <span class="original-price">$99.99</span>
-              <span class="discount-price">$0.00</span>
-              <span class="savings">¡AHORRA $99.99! 💰</span>
+              <span class="original-price">999.999,99€</span>
+              <span class="discount-price">0,00€</span>
+              <span class="savings">¡AHORRA TODO! (Y TU SALUD MENTAL) 💸</span>
             </div>
             <div class="social-proof">
-              <p>👨‍💻 "Antes mi código era un desastre, ahora es una obra de arte" - Juan, 27</p>
-              <p>👩‍💻 "Por fin puedo entender mi propio código" - María, 31</p>
+              <p>👨‍💻 "Mi código es tan caótico en Angular 15 que Stack Overflow se rindió" - Un Vibe Coder</p>
+              <p>🤖 "Hasta los robots tienen pesadillas con mi código" - ChatGPT, 2025</p>
             </div>
-            <p class="disclaimer">* Solo necesitas leer el libro de Robert C. Martin (y aplicarlo, claro)</p>
+            <p class="disclaimer">* No nos hacemos responsables de la salud mental de tus compañeros, ni de la tuya, ni de la de nadie, ni de los daños materiales. Las cucharas no existen. Si ves un pingüino con sombrero, corre. El tiempo es una construcción social. ⏳ Los unicornios son reales si crees lo suficiente.</p>
             <div class="guarantee">
-              <span>🛡️ GARANTÍA DE 100% DE SATISFACCIÓN O TU DINERO DEVUELTO</span>
-            </div>
-          </div>
+              <span>🛡️ GARANTÍA DE -100% DE SATISFACCIÓN O TE DEVOLVEMOS EL CAOS</span>
         </div>
       </div>
     </div>
@@ -153,6 +133,19 @@ import { trigger, transition, style, animate } from '@angular/animations';
         position: absolute;
         top: -10px;
         right: -10px;
+        background: #ff6b6b;
+        color: white;
+        padding: 0.5rem;
+        border-radius: 4px;
+        transform: rotate(15deg);
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .chaos-warning {
+        position: absolute;
+        top: -10px;
+        left: -10px;
         background: #ff6b6b;
         color: white;
         padding: 0.5rem;
@@ -267,6 +260,106 @@ import { trigger, transition, style, animate } from '@angular/animations';
       50% { opacity: 0.5; }
       100% { opacity: 1; }
     }
+
+    .bottom-left-chaos {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      color: #ff00ff; /* A chaotic color */
+      font-size: 1rem;
+      font-weight: bold;
+      animation: blink 1s infinite;
+      z-index: 10000;
+    }
+
+    .random-fact {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-style: italic;
+      color: #8a2be2; /* BlueViolet */
+      font-size: 0.9rem;
+    }
+
+    .random-floating-text {
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      transform: translateY(-50%) rotate(12deg);
+      color: rgba(255, 0, 0, 0.5);
+      font-size: 0.8rem;
+      font-weight: bold;
+      pointer-events: none;
+    }
+
+    .another-random-text {
+      position: absolute;
+      bottom: 10%;
+      right: 10%;
+      color: #00ffff;
+      font-size: 1.2rem;
+      transform: rotate(-8deg);
+    }
+
+    .yet-another-random-text {
+       position: absolute;
+       bottom: 20%;
+       left: 10%;
+       font-size: 1.5rem;
+       color: orange;
+       transform: rotate(5deg);
+       border: 2px dashed orange;
+       padding: 5px;
+     }
+
+    .random-bottom-left-element {
+      position: absolute;
+      bottom: 15%;
+      left: 5%;
+      color: #39ff14;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transform: rotate(-15deg);
+      text-shadow: 1px 1px 5px #39ff14;
+    }
+
+    .even-more-chaos {
+      position: absolute;
+      bottom: 25%;
+      left: 8%;
+      color: #ffff00;
+      font-size: 0.9rem;
+      transform: rotate(20deg);
+      border: 1px solid #ffff00;
+      padding: 3px;
+    }
+
+    .bottom-left-random-filler {
+      position: absolute;
+      bottom: 30%;
+      left: 12%;
+      color: #ff1493;
+      font-size: 1.3rem;
+      font-weight: bold;
+      transform: rotate(-30deg) scale(1.1);
+      text-shadow: 2px 2px #000;
+      opacity: 0.8;
+    }
+
+    .hidden-chaos {
+      /* It's hidden, but it's there, being chaotic in spirit */
+      opacity: 0;
+    }
+
+    .random-element {
+      position: absolute;
+      top: 5%;
+      left: 5%;
+      font-size: 2rem;
+      color: yellow;
+      text-shadow: 2px 2px #ff00ff;
+      animation: pulse 1.5s infinite alternate;
+    }
+
   `],
   animations: [
     trigger('fadeIn', [
