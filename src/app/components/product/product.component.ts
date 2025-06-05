@@ -60,6 +60,12 @@ export class ProductComponent implements OnInit {
   itemsPerPage = 10;
   totalPages = 1;
   paginatedProducts: Product[] = [];
+  showBulkEditModal = false;
+  selectedProducts: Product[] = [];
+  bulkEditCategory: string = '';
+  bulkEditPriceAdjustment: number | null = null;
+  bulkEditStockAdjustment: number | null = null;
+  bulkEditCatalogStatus: boolean | null = null;
 
   constructor(private productService: ProductService, private promotionService: PromotionService) {}
 
@@ -294,6 +300,72 @@ export class ProductComponent implements OnInit {
       this.paginatedProducts = this.sortProducts(filteredProducts, this.sortCriteria, this.sortDirection);
       this.totalPages = Math.ceil(filteredProducts.length / this.itemsPerPage);
       this.currentPage = 1;
+    });
+  }
+
+  openBulkEditModal(): void {
+    this.showBulkEditModal = true;
+  }
+
+  showLowStock(): void {
+    this.products$.subscribe(products => {
+      const lowStockProducts = products.filter(p => 
+        (p.inventoryData?.stock || 0) <= (p.inventoryData?.threshold || 0)
+      );
+      this.paginatedProducts = this.sortProducts(lowStockProducts, this.sortCriteria, this.sortDirection);
+      this.totalPages = Math.ceil(lowStockProducts.length / this.itemsPerPage);
+      this.currentPage = 1;
+    });
+  }
+
+  closeBulkEditModal(): void {
+    this.showBulkEditModal = false;
+    this.bulkEditCategory = '';
+    this.bulkEditPriceAdjustment = null;
+    this.bulkEditStockAdjustment = null;
+    this.bulkEditCatalogStatus = null;
+  }
+
+  applyBulkEdit(): void {
+    this.loading = true;
+    this.products$.subscribe(products => {
+      const updatePromises = products.map(product => {
+        const updates: any = {};
+        
+        if (this.bulkEditCategory) {
+          updates.category = this.bulkEditCategory;
+        }
+        
+        if (this.bulkEditPriceAdjustment !== null) {
+          updates.price = product.price * (1 + this.bulkEditPriceAdjustment / 100);
+        }
+        
+        if (this.bulkEditStockAdjustment !== null) {
+          updates.stockChange = this.bulkEditStockAdjustment;
+        }
+        
+        if (this.bulkEditCatalogStatus !== null) {
+          updates.inCatalog = this.bulkEditCatalogStatus;
+        }
+
+        if (Object.keys(updates).length > 0) {
+          return this.productService.updateProduct(product.id, { ...product, ...updates }).toPromise();
+        }
+        return Promise.resolve();
+      });
+
+      Promise.all(updatePromises)
+        .then(() => {
+          this.loadProducts();
+          this.closeBulkEditModal();
+        })
+        .catch(error => {
+          console.error('Error applying bulk edit:', error);
+          this.errorMessage = 'Error applying changes. Please try again.';
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     });
   }
 }

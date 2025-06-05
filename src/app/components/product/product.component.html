@@ -1,5 +1,14 @@
 <h2 class="product-list-title">Product List</h2>
 
+<div class="quick-actions">
+  <button class="action-btn bulk-edit-btn" (click)="openBulkEditModal()">
+    <i class="fas fa-edit"></i> Bulk Edit
+  </button>
+  <button class="action-btn low-stock-btn" (click)="showLowStock()">
+    <i class="fas fa-exclamation-triangle"></i> Show Low Stock
+  </button>
+</div>
+
 <div class="controls-section">
   <div class="search-container">
     <input 
@@ -224,6 +233,53 @@
     <div class="modal-actions">
       <button class="confirm-btn" (click)="updateStock()"><i class="fas fa-check-circle"></i> Confirm</button>
       <button class="cancel-btn" (click)="closeStockModal()"><i class="fas fa-times-circle"></i> Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showBulkEditModal" class="modal-overlay" [@fadeInOut]>
+  <div class="modal-content bulk-edit-modal" [@slideInOut]>
+    <h3>Bulk Edit Products</h3>
+    <div class="bulk-edit-form">
+      <div class="form-group">
+        <label>Category:
+          <select [(ngModel)]="bulkEditCategory">
+            <option value="">No Change</option>
+            <option value="BOOKS">Books</option>
+            <option value="TOYS">Toys</option>
+            <option value="SPORTS">Sports</option>
+            <option value="MEAL">Meal</option>
+            <option value="CLOTHES">Clothes</option>
+          </select>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Price Adjustment (%):
+          <input type="number" [(ngModel)]="bulkEditPriceAdjustment" placeholder="Enter percentage">
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Stock Adjustment:
+          <input type="number" [(ngModel)]="bulkEditStockAdjustment" placeholder="Enter quantity">
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Catalog Status:
+          <select [(ngModel)]="bulkEditCatalogStatus">
+            <option value="">No Change</option>
+            <option [ngValue]="true">In Catalog</option>
+            <option [ngValue]="false">Not in Catalog</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="confirm-btn" (click)="applyBulkEdit()">
+        <i class="fas fa-check-circle"></i> Apply Changes
+      </button>
+      <button class="cancel-btn" (click)="closeBulkEditModal()">
+        <i class="fas fa-times-circle"></i> Cancel
+      </button>
     </div>
   </div>
 </div>
