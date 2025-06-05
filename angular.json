@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "no-tens-ni-p-idea-de-programar": {
+    "product-front": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -20,7 +20,7 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
-            "outputPath": "dist/no-tens-ni-p-idea-de-programar",
+            "outputPath": "dist/product-front",
             "index": "src/index.html",
             "assets": [
               {
@@ -60,10 +60,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "no-tens-ni-p-idea-de-programar:build:production"
+              "buildTarget": "product-front:build:production"
             },
             "development": {
-              "buildTarget": "no-tens-ni-p-idea-de-programar:build:development"
+              "buildTarget": "product-front:build:development"
             }
           },
           "defaultConfiguration": "development"
